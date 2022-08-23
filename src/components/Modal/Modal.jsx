@@ -4,7 +4,13 @@ import { Overlay, ModalBody, Image } from './Modal.styled';
 
 class Modal extends Component {
   static propTypes = {
-    images: PropTypes.array.isRequired,
+    images: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        largeImageURL: PropTypes.string.isRequired,
+        tags: PropTypes.string.isRequired,
+      })
+    ).isRequired,
     modalId: PropTypes.string.isRequired,
     closeModal: PropTypes.func.isRequired,
   };

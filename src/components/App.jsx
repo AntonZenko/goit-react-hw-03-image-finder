@@ -21,9 +21,11 @@ class App extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    if (prevState.page !== this.state.page && this.state.page !== 1) {
+    const { searchValue, page } = this.state;
+
+    if (prevState.page !== page && page !== 1) {
       this.setState({ loader: true });
-      const images = await getImages(this.state.searchValue, this.state.page);
+      const images = await getImages(searchValue, page);
       this.setState(() => ({
         images: [...this.state.images, ...images.hits],
         loader: false,
@@ -69,34 +71,30 @@ class App extends Component {
   };
 
   render() {
+    const { images, loader, error, modalId, totalHits } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.onSubmit} />
-        {this.state.images.length !== 0 ? (
-          <ImageGallery
-            images={this.state.images}
-            openModal={this.toggleModal}
-          />
+        {images.length !== 0 ? (
+          <ImageGallery images={images} openModal={this.toggleModal} />
         ) : (
           <Message
             text={
-              this.state.error
+              error
                 ? 'Something went wrong :( Try again.'
                 : 'Type something to search'
             }
           />
         )}
 
-        {this.state.loader ? <Spinner /> : null}
-        {this.state.images.length !== 0 &&
-          !this.state.loading &&
-          this.state.images.length !== this.state.totalHits && (
-            <Button onClick={this.loadMore} />
-          )}
-        {this.state.modalId && (
+        {loader ? <Spinner /> : null}
+        {images.length !== 0 && !loader && images.length !== totalHits && (
+          <Button onClick={this.loadMore} />
+        )}
+        {modalId && (
           <Modal
-            images={this.state.images}
-            modalId={this.state.modalId}
+            images={images}
+            modalId={modalId}
             closeModal={this.toggleModal}
           />
         )}

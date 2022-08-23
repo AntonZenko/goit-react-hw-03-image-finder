@@ -3,6 +3,7 @@ import ImageGalleryItem from '../ImageGalleryItem';
 import { ImageGalleryList } from './ImageGallery.styled';
 
 const ImageGallery = ({ images, openModal }) => {
+  console.log(images);
   return (
     <ImageGalleryList>
       {images.map(image => (
@@ -20,6 +21,12 @@ const ImageGallery = ({ images, openModal }) => {
 export default ImageGallery;
 
 ImageGallery.propTypes = {
-  images: PropTypes.array.isRequired,
   openModal: PropTypes.func.isRequired,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };

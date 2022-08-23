@@ -10,5 +10,5 @@ const Title = ({ text }) => {
 export default Title;
 
 Title.propTypes = {
-  text: PropTypes.string,
+  text: PropTypes.string.isRequired,
 };
